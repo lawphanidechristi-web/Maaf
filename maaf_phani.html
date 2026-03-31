@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Untuk Kamu ❤️</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #ffe6f0;
+    overflow: hidden;
+}
+
+.fade-in { animation: fadeIn 1s ease-in-out; }
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+.zoom { animation: zoomIn 0.5s ease; }
+@keyframes zoomIn { from {transform: scale(0.7);} to {transform: scale(1);} }
+
+.heart {
+    position: absolute;
+    color: red;
+    animation: fall 4s linear infinite;
+}
+@keyframes fall {
+    0% {transform: translateY(-10%); opacity:1;}
+    100% {transform: translateY(110vh); opacity:0;}
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/8vH7Zr2XKcE?autoplay=1&loop=1&playlist=8vH7Zr2XKcE"
+allow="autoplay"></iframe>
+
+<audio id="vnAudio" src="vn.m4a"></audio>
+
+<div id="login" class="fade-in">
+    <h2>Masukkan Password ❤️</h2>
+    <input type="password" id="password">
+    <button onclick="checkPassword()">Masuk</button>
+</div>
+
+<div id="games" class="hidden fade-in">
+    <h2 class="zoom">Main dulu ya 🎮</h2>
+
+    <div id="game1">
+        <p>Klik 5x 😆</p>
+        <button onclick="clickGame()">Klik</button>
+        <p id="count">0 / 5</p>
+    </div>
+
+    <div id="game2" class="hidden">
+        <p>Tebak angka (1-5)</p>
+        <input id="guess">
+        <button onclick="guessGame()">Tebak</button>
+    </div>
+
+    <div id="game3" class="hidden">
+        <p>Klik hati ❤️</p>
+        <button onclick="nextGame()">❤️</button>
+    </div>
+
+    <div id="game4" class="hidden">
+        <p>Tangkap tombol 😜</p>
+        <button id="moveBtn">Tangkap Aku!</button>
+    </div>
+
+    <div id="game5" class="hidden">
+        <button onclick="finishGame()">Lanjut ❤️</button>
+    </div>
+</div>
+
+<div id="message" class="hidden fade-in">
+    <h2>Untuk Kamu ❤️</h2>
+    <p id="text"></p>
+
+    <button onclick="yesClick()">Yes ❤️</button>
+    <button onclick="noClick()" id="noBtn">No 💔</button>
+
+    <p id="response"></p>
+</div>
+
+<script>
+let clickCount = 0;
+let noSize = 16;
+
+let messageText = [
+"Aku mau minta maaf...",
+"Hari ini aku ninggalin kamu sendirian...",
+"Aku tau itu bikin kamu sepi...",
+"Aku nyesel banget...",
+"Kamu itu penting banget buat aku...",
+"Aku gak mau kehilangan kamu...",
+"Kamu masih sayang aku? 🥺"
+];
+
+let i = 0;
+
+function showText() {
+    if (i < messageText.length) {
+        document.getElementById("text").innerHTML += messageText[i] + "<br><br>";
+        i++;
+        setTimeout(showText, 2000);
+    }
+}
+
+function checkPassword() {
+    if (document.getElementById("password").value === "110226") {
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("games").classList.remove("hidden");
+    }
+}
+
+function clickGame() {
+    clickCount++;
+    document.getElementById("count").innerText = clickCount;
+
+    if (clickCount >= 5) {
+        document.getElementById("game1").classList.add("hidden");
+        document.getElementById("game2").classList.remove("hidden");
+    }
+}
+
+function guessGame() {
+    document.getElementById("game2").classList.add("hidden");
+    document.getElementById("game3").classList.remove("hidden");
+}
+
+function nextGame() {
+    document.getElementById("game3").classList.add("hidden");
+    document.getElementById("game4").classList.remove("hidden");
+}
+
+let btn = document.getElementById("moveBtn");
+btn.addEventListener("mouseover", () => {
+    btn.style.position = "absolute";
+    btn.style.left = Math.random()*window.innerWidth+"px";
+    btn.style.top = Math.random()*window.innerHeight+"px";
+});
+
+btn.addEventListener("click", () => {
+    document.getElementById("game4").classList.add("hidden");
+    document.getElementById("game5").classList.remove("hidden");
+});
+
+function finishGame() {
+    document.getElementById("games").classList.add("hidden");
+    document.getElementById("message").classList.remove("hidden");
+
+    showText();
+    createHearts();
+}
+
+function createHearts() {
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+
+        heart.style.left = Math.random()*window.innerWidth+"px";
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),4000);
+    },300);
+}
+
+function yesClick() {
+    document.getElementById("response").innerHTML = "Aku sayang kamu ❤️🥺";
+    document.getElementById("vnAudio").play();
+}
+
+function noClick() {
+    let btn = document.getElementById("noBtn");
+
+    document.getElementById("response").innerHTML =
+    "😡 kamu sudah ngga sayang aku lagi ya ulang cepat 😡";
+
+    noSize -= 2;
+    btn.style.fontSize = noSize + "px";
+
+    btn.style.position = "absolute";
+    btn.style.left = Math.random()*window.innerWidth+"px";
+    btn.style.top = Math.random()*window.innerHeight+"px";
+
+    if (noSize <= 6) {
+        btn.style.display = "none";
+    }
+}
+
+document.getElementById("noBtn").addEventListener("mouseover", function() {
+    noClick();
+});
+</script>
+
+</body>
+</html>
